@@ -11,7 +11,7 @@ Setup (testado no linux Ubuntu 20.04)
 3. Clone o repositório:
 
     ```bash
-    $ git clone https://github.com/LEMSantos/MinMax-Tic-Tac-Toe.git
+    $ git clone https://github.com/LEMSantos/MiniMax-Tic-Tac-Toe.git
     ```
     ou faça o download do zip e extraia.
 
