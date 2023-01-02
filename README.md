@@ -1,4 +1,4 @@
-MinMax-Tic-Tac-Toe
+MiniMax-Tic-Tac-Toe
 ==================
 
 Implementação do jogo Tic Tac Toe (Jogo da Velha) utilizando o Pygame como interface gráfica e o algorítimo Minimax para a inteligência da CPU. O Minimax foi implementado com a otimização da Poda alfa-beta.
