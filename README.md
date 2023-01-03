@@ -1,4 +1,4 @@
-MinMax-Tic-Tac-Toe
+MiniMax-Tic-Tac-Toe
 ==================
 
 Implementação do jogo Tic Tac Toe (Jogo da Velha) utilizando o Pygame como interface gráfica e o algorítimo Minimax para a inteligência da CPU. O Minimax foi implementado com a otimização da Poda alfa-beta.
@@ -11,7 +11,7 @@ Setup (testado no linux Ubuntu 20.04)
 3. Clone o repositório:
 
     ```bash
-    $ git clone https://github.com/LEMSantos/MinMax-Tic-Tac-Toe.git
+    $ git clone https://github.com/LEMSantos/MiniMax-Tic-Tac-Toe.git
     ```
     ou faça o download do zip e extraia.
 
