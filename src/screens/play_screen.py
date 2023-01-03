@@ -6,6 +6,7 @@ from src.core.tic_tac_toe_utils import is_terminal, is_win, is_draw
 from src.components.turn_indicator import TurnIndicator
 from src.screens.abstract_screen import AbstractScreen
 from src.components.game_score import GameScore
+from src.components.button import Button
 from src.components.board import Board
 from src.core.minmax import MinMax
 from src.config import *
@@ -43,6 +44,8 @@ class PlayScreen(AbstractScreen):
         self.turn_indicator = TurnIndicator()
         self.game_score = GameScore()
         self.board = Board()
+        self.back_button = Button(50, "arrow", self.back_to_select_screen)
+        self.restart_button = Button(50, "restart", self.reset)
 
     def __convert_board(self, board: Dict[Tuple[int, int], List[Any]]):
         new_board = [
@@ -74,6 +77,25 @@ class PlayScreen(AbstractScreen):
             self.board_grid[(i, j)][0] = self.cpu_symbol
             self.human_turn = True
 
+    def reset(self):
+        print("Jogo resetado")
+        self.board_grid = {
+            (i, j): [" ", pygame.Rect(
+                self.x_board + i * SQUARE_SIZE,
+                self.y_board + j * SQUARE_SIZE,
+                SQUARE_SIZE,
+                SQUARE_SIZE,
+            )]
+            for j in range(3)
+            for i in range(3)
+        }
+
+        self.human_turn = self.human_symbol == "X"
+        print("Acabou")
+
+    def back_to_select_screen(self):
+        self.change_screen("select-screen")
+
     def set_human_symbol(self, symbol: str):
         self.human_symbol = symbol
         self.cpu_symbol = "X" if symbol == "O" else "O"
@@ -98,9 +120,12 @@ class PlayScreen(AbstractScreen):
             (SCREEN_WIDTH // 2, self.y_board + BOARD_SIZE + 50),
             self.human_symbol if self.human_turn else self.cpu_symbol
         )
+        self.back_button.show((75, SCREEN_HEIGHT - 80))
+        self.restart_button.show((SCREEN_WIDTH - 75, SCREEN_HEIGHT - 80))
+
+        self.update_terminal()
 
         if self.check_terminal:
             print("Acabou o jogo")
 
-        self.update_terminal()
         self.cpu_input()
