@@ -23,7 +23,6 @@ class Game:
         self.__setup()
 
     def __setup(self):
-        self.screen.fill((255, 255, 255))
         pygame.display.set_caption(GAME_TITLE)
 
     def __handle_events(self) -> None:
@@ -40,6 +39,7 @@ class Game:
 
     def run(self) -> None:
         while True:
+            self.screen.fill((255, 255, 255))
             self.__handle_events()
 
             dt = pygame.time.get_ticks() / 1000
