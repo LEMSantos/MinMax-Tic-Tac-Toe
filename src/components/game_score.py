@@ -48,6 +48,9 @@ class GameScore:
             ("empates", ScoreItem(f"{BASE_APP_PATH}/assets/draw.png"), DRAW_COLOR),
         ]
 
+    def update_score(self, x_wins, o_wins, draws):
+        self.scores = [o_wins, x_wins, draws]
+
     def show(self, position: Tuple[int, int]):
         x, y = position
 

@@ -50,6 +50,8 @@ class PlayScreen(AbstractScreen):
         self.back_button = Button(50, "arrow", self.back_to_select_screen)
         self.restart_button = Button(50, "restart", self.reset)
 
+        self.wins = {"X": 0, "O": 0, "D": 0}
+
     def __convert_board(self, board: Dict[Tuple[int, int], List[Any]]):
         new_board = [
             [" " for _ in range(3)]
@@ -92,11 +94,23 @@ class PlayScreen(AbstractScreen):
 
         self.human_turn = self.human_symbol == "X"
 
+        if self.converted_board:
+            if is_win(self.converted_board, self.human_symbol):
+                self.wins[self.human_symbol] += 1
+
+            if is_win(self.converted_board, self.cpu_symbol):
+                self.wins[self.cpu_symbol] += 1
+
+            if is_draw(self.converted_board):
+                self.wins["D"] += 1
+
     def back_to_select_screen(self):
         self.change_screen("select-screen")
 
         self.human_symbol = None
         self.cpu_symbol = None
+
+        self.wins = {"X": 0, "O": 0, "D": 0}
 
     def set_human_symbol(self, symbol: str):
         self.human_symbol = symbol
@@ -125,6 +139,7 @@ class PlayScreen(AbstractScreen):
 
     def show(self, dt: float):
         self.update_terminal()
+        self.game_score.update_score(self.wins["X"], self.wins["O"], self.wins["D"])
 
         self.game_score.show((self.x_board, 50))
         self.board.show((self.x_board, self.y_board), self.board_grid)
@@ -146,6 +161,5 @@ class PlayScreen(AbstractScreen):
             )
 
             self.display_surface.blit(message_surf, message_rect)
-
 
         self.cpu_input()
