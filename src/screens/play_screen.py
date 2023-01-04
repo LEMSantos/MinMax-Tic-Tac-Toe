@@ -17,6 +17,9 @@ class PlayScreen(AbstractScreen):
     def __init__(self, change_screen: Callable):
         self.change_screen = change_screen
         self.display_surface = pygame.display.get_surface()
+        self.message_font = pygame.font.Font(
+            f"{BASE_APP_PATH}/fonts/Nunito-Regular.ttf", 24
+        )
 
         self.human_symbol = "O"
         self.cpu_symbol = "X"
@@ -78,7 +81,6 @@ class PlayScreen(AbstractScreen):
             self.human_turn = True
 
     def reset(self):
-        print("Jogo resetado")
         self.board_grid = {
             (i, j): [" ", pygame.Rect(
                 self.x_board + i * SQUARE_SIZE,
@@ -91,7 +93,6 @@ class PlayScreen(AbstractScreen):
         }
 
         self.human_turn = self.human_symbol == "X"
-        print("Acabou")
 
     def back_to_select_screen(self):
         self.change_screen("select-screen")
@@ -110,6 +111,17 @@ class PlayScreen(AbstractScreen):
             self.converted_board, self.human_symbol, self.cpu_symbol
         )
 
+    def get_message(self):
+        message = "Foi um empate!", END_DRAW_COLOR
+
+        if is_win(self.converted_board, self.set_human_symbol):
+            message = "Parabéns, você ganhou!", END_WIN_COLOR
+
+        if is_win(self.converted_board, self.cpu_symbol):
+            message = "Que pena, você perdeu", END_LOSE_COLOR
+
+        return message
+
     def show(self, dt: float):
         self.update_terminal()
         self.input()
@@ -126,6 +138,14 @@ class PlayScreen(AbstractScreen):
         self.update_terminal()
 
         if self.check_terminal:
-            print("Acabou o jogo")
+            message, color = self.get_message()
+
+            message_surf = self.message_font.render(message, True, color)
+            message_rect = message_surf.get_rect(
+                midtop=(SCREEN_WIDTH // 2, self.y_board + BOARD_SIZE + 100)
+            )
+
+            self.display_surface.blit(message_surf, message_rect)
+
 
         self.cpu_input()
