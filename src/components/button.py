@@ -7,10 +7,16 @@ from src.config import *
 
 class Button:
 
-    def __init__(self, button_size: int, icon: Text, action_function: Callable):
+    def __init__(self,
+                 button_size: int,
+                 icon: Text,
+                 action_function: Callable,
+                 button_color: Tuple[int, int, int]=RESTART_COLOR):
+
         self.display_surface = pygame.display.get_surface()
 
         self.action_function = action_function
+        self.button_color = button_color
 
         self.button_size = button_size
         self.off_gap = 4
@@ -54,7 +60,7 @@ class Button:
 
         pygame.draw.rect(
             self.display_surface,
-            RESTART_COLOR,
+            self.button_color,
             internal_circle_rect,
             0,
             self.main_rect.width // 2,
