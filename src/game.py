@@ -19,7 +19,7 @@ class Game:
             "select-screen": SelectScreen(self.change_screen),
         }
 
-        self.atual_screen = self.screens["play-screen"]
+        self.atual_screen = self.screens["select-screen"]
 
         self.__setup()
 
@@ -31,6 +31,10 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                mouse_pos = pygame.mouse.get_pos()
+                self.atual_screen.input(mouse_pos)
 
     def change_screen(self, name, human_symbol=None):
         self.atual_screen = self.screens[name]

@@ -21,8 +21,8 @@ class PlayScreen(AbstractScreen):
             f"{BASE_APP_PATH}/fonts/Nunito-Regular.ttf", 24
         )
 
-        self.human_symbol = "O"
-        self.cpu_symbol = "X"
+        self.human_symbol = None
+        self.cpu_symbol = None
 
         self.human_turn = False
         self.check_terminal = False
@@ -61,17 +61,15 @@ class PlayScreen(AbstractScreen):
 
         return new_board
 
-    def input(self):
-        mouse_buttons = pygame.mouse.get_pressed()
+    def input(self, position):
+        if self.human_turn and not self.check_terminal and self.human_symbol:
+            for value in self.board_grid.values():
+                if value[1].collidepoint(position) and value[0] == " ":
+                    value[0] = self.human_symbol
+                    self.human_turn = False
 
-        if mouse_buttons[0]:
-            position = pygame.mouse.get_pos()
-
-            if self.human_turn and not self.check_terminal:
-                for value in self.board_grid.values():
-                    if value[1].collidepoint(position) and value[0] == " ":
-                        value[0] = self.human_symbol
-                        self.human_turn = False
+        self.back_button.input(position)
+        self.restart_button.input(position)
 
     def cpu_input(self):
         if not self.human_turn and not self.check_terminal:
@@ -96,6 +94,9 @@ class PlayScreen(AbstractScreen):
 
     def back_to_select_screen(self):
         self.change_screen("select-screen")
+
+        self.human_symbol = None
+        self.cpu_symbol = None
 
     def set_human_symbol(self, symbol: str):
         self.human_symbol = symbol
@@ -124,7 +125,6 @@ class PlayScreen(AbstractScreen):
 
     def show(self, dt: float):
         self.update_terminal()
-        self.input()
 
         self.game_score.show((self.x_board, 50))
         self.board.show((self.x_board, self.y_board), self.board_grid)
