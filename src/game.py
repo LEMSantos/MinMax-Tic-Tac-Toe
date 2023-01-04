@@ -5,6 +5,7 @@ import pygame
 from src.config import *
 from src.screens import PlayScreen, SelectScreen
 
+
 class Game:
 
     def __init__(self) -> None:
@@ -36,6 +37,7 @@ class Game:
 
         if human_symbol:
             self.screens["play-screen"].set_human_symbol(human_symbol)
+            self.screens["play-screen"].reset()
 
     def run(self) -> None:
         while True:
